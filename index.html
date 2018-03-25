@@ -1,0 +1,66 @@
+<html ng-app="app">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title>Lift Simulation</title>
+</head>
+
+<body>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+	<link href="app.css" rel="stylesheet">
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+	<script src="app.js"></script>
+
+	<div class="main-container" ng-controller="MainCtrl as ctrl">
+		<div class="building">
+			<div ng-repeat="floor in ctrl.floors" class="floor overflow-hidden">
+				<div class="floor-number">{{floor.index}}</div>
+				<div class="lift-tunnel"></div>
+				<div class="right-end">
+					<div class="lift-btns">
+						<div ng-click="ctrl.requestFloor(floor, 0)"
+						     ng-if="ctrl.floorLength-floor.index != 0"
+						     ng-class="{'active': floor.up}"
+						     class="up-btn">
+							<i class="fa fa-arrow-up"></i>
+						</div>
+						<div ng-click="ctrl.requestFloor(floor, 1)"
+						     ng-if="ctrl.floorLength-floor.index != ctrl.floorLength"
+						     ng-class="{'active': floor.down}"
+						     class="down-btn">
+							<i class="fa fa-arrow-down"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="lift" class="lift" ng-style="{'bottom': ctrl.liftPos}">
+				<i ng-if="ctrl.liftDir === 0" class="fa fa-arrow-up"></i>
+				<i ng-if="ctrl.liftDir === 1"  class="fa fa-arrow-down"></i>
+			</div>
+		</div>
+
+		<div class="floor-control">
+			<div class="minus-btn btn"
+			     ng-if="ctrl.floorLength > 0"
+			     ng-click="ctrl.decreaseFloor()"><i class="fa fa-minus"></i></div>
+			<div>Floors:&nbsp;{{ctrl.floorLength}}</div>
+			<div class="plus-btn btn" ng-click="ctrl.increaseFloor()"><i class="fa fa-plus"></i></div>
+		</div>
+
+		<div class="lift-control">
+			<div ng-click="ctrl.requestFloor(floor)" ng-repeat="floor in ctrl.floors" class="btn">{{floor.index}}</div>
+		</div>
+
+		<!--<div class="output-display">-->
+			<!--<div><span>Up request:&nbsp;</span><span ng-bind="ctrl.display(ctrl.upRequest)"></span></div>-->
+			<!--<div><span>Next Up request:&nbsp;</span><span ng-bind="ctrl.display(ctrl.nextUpRequest)"></span></div>-->
+			<!--<div><span>Down request:&nbsp;</span><span ng-bind="ctrl.display(ctrl.downRequest)"></span></div>-->
+			<!--<div><span>Next Down request:&nbsp;</span><span ng-bind="ctrl.display(ctrl.nextDownRequest)"></span></div>-->
+		<!--</div>-->
+	</div>
+</body>
+
+</html>
