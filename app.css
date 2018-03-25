@@ -78,7 +78,9 @@ html {
 }
 
 .lift.open {
-    background-color: darkgrey;
+	color: grey;
+	border-color: grey;
+    background-color: white;
     transition: background-color 2000ms linear;
 }
 
@@ -120,6 +122,11 @@ html {
 	font-size: 14pt;
     background-color: whitesmoke;
 	border-radius: 5px;
+}
+
+.lift-control .btn.active {
+	color: white;
+	background-color: blue;
 }
 
 .floor-control {

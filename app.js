@@ -9,6 +9,7 @@ function FloorModel() {
 		this.pos = (index * (100 + 5) + 15);
 		this.up = false;
 		this.down = false;
+		this.active = false;
 	}
 
 	return Floor;
@@ -84,6 +85,7 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 		if (direction === 1)
 			floor.down = true;
 
+		floor.active = true;
 		if ((direction === 0) || (!direction && self.liftPos < floor.pos)) {
 			pushToRequest(floor, (self.liftDir === 1 ||self.liftPos < floor.pos) ? _upRequests : _nextUpRequests, true);
 		} else if ((direction === 1) || (!direction && self.liftPos > floor.pos)) {
@@ -150,7 +152,9 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			floor.up = false;
 			_currentFloor = floor;
 			self.isLiftOpen = true;
+			floor.active = false;
 			popFromRequest(_upRequests);
+			activeAllPendingRequests();
 		}
 	}
 
@@ -179,7 +183,9 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			floor.down = false;
 			_currentFloor = floor;
 			self.isLiftOpen = true;
+			floor.active = false;
 			popFromRequest(_downRequests);
+			activeAllPendingRequests();
 		}
 	}
 
@@ -235,6 +241,18 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			--self.floorLength;
 
 		init(self.floorLength);
+	}
+
+	function activeAllPendingRequests() {
+		var i;
+		for (i = 0; i < _upRequests.length; ++i)
+			_upRequests[i].active = true;
+		for (i = 0; i < _nextUpRequests.length; ++i)
+			_nextUpRequests[i].active = true;
+		for (i = 0; i < _downRequests.length; ++i)
+			_downRequests[i].active = true;
+		for (i = 0; i < _nextDownRequests.length; ++i)
+			_nextDownRequests[i].active = true;
 	}
 
 	init(5);

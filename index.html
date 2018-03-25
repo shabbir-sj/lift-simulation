@@ -51,7 +51,12 @@
 		</div>
 
 		<div class="lift-control">
-			<div ng-click="ctrl.requestFloor(floor)" ng-repeat="floor in ctrl.floors" class="btn">{{floor.index}}</div>
+			<div ng-click="ctrl.requestFloor(floor)"
+			     ng-repeat="floor in ctrl.floors"
+			     class="btn"
+			     ng-class="{'active': floor.active}">
+				{{floor.index}}
+			</div>
 		</div>
 
 		<!--<div class="output-display">-->
