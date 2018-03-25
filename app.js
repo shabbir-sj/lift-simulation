@@ -30,6 +30,7 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 
 	var _animationStep = 5;
 	var _animationTime = 100;
+	var _liftOpenTime = 2000;
 
     var self = this, _timer;
 
@@ -59,6 +60,8 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 		_nextDownRequests = [];
 
 		_currentFloor = 0;
+
+		self.isLiftOpen = false;
 
 		self.liftDir = 0;       // 0 for up and 1 for down
 		self.liftPos = 15;
@@ -99,7 +102,9 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 
 		(function loop() {
 
-			if (_upRequests.length !== 0 || _downRequests.length !== 0 || _nextUpRequests.length !== 0 || _nextDownRequests.length !== 0) {
+			self.isLiftOpen = false;
+			if (_upRequests.length !== 0 || _downRequests.length !== 0 ||
+				_nextUpRequests.length !== 0 || _nextDownRequests.length !== 0) {
 
 				if (self.liftDir === 0)
 					processUpRequest();
@@ -110,7 +115,8 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 				if (!$scope.$$phase)
 					$scope.$apply();
 
-				_timer = $timeout(loop, _animationTime);
+				var additionalTime = (self.isLiftOpen == true) ? _liftOpenTime : 0;
+				_timer = $timeout(loop, _animationTime + additionalTime);
 
 			} else {
 				$timeout.cancel(_timer);
@@ -143,6 +149,7 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			self.liftPos = floor.pos;
 			floor.up = false;
 			_currentFloor = floor;
+			self.isLiftOpen = true;
 			popFromRequest(_upRequests);
 		}
 	}
@@ -171,18 +178,32 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			self.liftPos = floor.pos;
 			floor.down = false;
 			_currentFloor = floor;
+			self.isLiftOpen = true;
 			popFromRequest(_downRequests);
 		}
 	}
 
 	function pushToRequest(floor, requests, isUp) {
-		var requestSize = requests.length, i = 0;
-		while (i < requestSize) {
-			if (isUp && floor.pos < requests[i].pos)
-				break;
 
-			if (!isUp && floor.pos > requests[i].pos)
-				break;
+		console.log(requests.map(function(i) { return i.index; }).join(' '));
+		var requestSize = requests.length, i = 0;
+
+		while (i < requestSize) {
+
+			if (isUp) {
+				if (floor.pos < requests[i].pos)
+					break;
+				else if (floor.pos === requests[i].pos)
+					return;
+			}
+
+
+			if (!isUp) {
+				if (floor.pos > requests[i].pos)
+					break;
+				else if (floor.pos === requests[i].pos)
+					return;
+			}
 
 			++i;
 		}

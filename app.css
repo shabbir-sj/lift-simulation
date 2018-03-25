@@ -77,6 +77,11 @@ html {
 	box-sizing: border-box;
 }
 
+.lift.open {
+    background-color: darkgrey;
+    transition: background-color 2000ms linear;
+}
+
 .up-btn, .down-btn {
 	display: inline-block;
 	padding: 5px;
