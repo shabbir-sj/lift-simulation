@@ -95,6 +95,7 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 		if (_timer) {
 			$timeout.cancel(_timer);
 			_timer = null;
+			deactivateAllPendingRequests();
 		}
 
 		runLift();
@@ -123,9 +124,8 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			} else {
 				$timeout.cancel(_timer);
 				_timer = null;
+				deactivateAllPendingRequests();
 			}
-
-			activeAllPendingRequests();
 
 		})();
 
@@ -156,7 +156,7 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			self.isLiftOpen = true;
 			floor.active = false;
 			popFromRequest(_upRequests);
-			//activeAllPendingRequests();
+			activeAllPendingRequests();
 		}
 	}
 
@@ -187,7 +187,7 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			self.isLiftOpen = true;
 			floor.active = false;
 			popFromRequest(_downRequests);
-			//activeAllPendingRequests();
+			activeAllPendingRequests();
 		}
 	}
 
@@ -255,6 +255,14 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			_downRequests[i].active = true;
 		for (i = 0; i < _nextDownRequests.length; ++i)
 			_nextDownRequests[i].active = true;
+	}
+
+	function deactivateAllPendingRequests() {
+		if (_upRequests.length === 0 && _nextUpRequests.length === 0 &&
+			_downRequests.length === 0 && _nextDownRequests.length === 0) {
+			for (i = self.floorLength; i >= 0; i--)
+				self.floors[i].active = false;
+		}
 	}
 
 	init(5);
