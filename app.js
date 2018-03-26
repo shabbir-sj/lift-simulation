@@ -125,6 +125,8 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 				_timer = null;
 			}
 
+			activeAllPendingRequests();
+
 		})();
 
 	}
@@ -154,7 +156,7 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			self.isLiftOpen = true;
 			floor.active = false;
 			popFromRequest(_upRequests);
-			activeAllPendingRequests();
+			//activeAllPendingRequests();
 		}
 	}
 
@@ -185,7 +187,7 @@ function MainCtrl($scope, $timeout, Floor, $anchorScroll, $location) {
 			self.isLiftOpen = true;
 			floor.active = false;
 			popFromRequest(_downRequests);
-			activeAllPendingRequests();
+			//activeAllPendingRequests();
 		}
 	}
 
