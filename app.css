@@ -84,6 +84,10 @@ html {
     transition: background-color 2000ms linear;
 }
 
+.lift .fa-user {
+	padding: 10px;
+}
+
 .up-btn, .down-btn {
 	display: inline-block;
 	padding: 5px;

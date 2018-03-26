@@ -37,8 +37,13 @@
 				</div>
 			</div>
 			<div id="lift" class="lift" ng-style="{'bottom': ctrl.liftPos}" ng-class="{'open': ctrl.isLiftOpen}">
-				<i ng-if="ctrl.liftDir === 0" class="fa fa-arrow-up"></i>
-				<i ng-if="ctrl.liftDir === 1"  class="fa fa-arrow-down"></i>
+				<div>
+					<i ng-if="ctrl.liftDir === 0" class="fa fa-arrow-up"></i>
+					<i ng-if="ctrl.liftDir === 1" class="fa fa-arrow-down"></i>
+				</div>
+				<div ng-if="ctrl.isLiftOpen">
+					<i class="fa fa-user"></i>
+				</div>
 			</div>
 		</div>
 
